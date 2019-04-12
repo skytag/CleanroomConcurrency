@@ -34,7 +34,7 @@ class AsyncTests: XCTestCase
         semaphore.lock()
         var tries = 0
         while !semaphore.wait(until: Date().addingTimeInterval(1.0)) && !completed && tries < 10 {
-            RunLoop.current.run(mode: .defaultRunLoopMode, before: Date().addingTimeInterval(1.0))
+            RunLoop.current.run(mode: RunLoop.Mode.default, before: Date().addingTimeInterval(1.0))
             tries += 1
         }
         semaphore.unlock()
@@ -76,7 +76,7 @@ class AsyncTests: XCTestCase
         semaphore.lock()
         while completed < iterationsForDelayedTests {
             if !semaphore.wait(until: Date().addingTimeInterval(1.0)) {
-                RunLoop.current.run(mode: .defaultRunLoopMode, before: Date().addingTimeInterval(1.0))
+                RunLoop.current.run(mode: RunLoop.Mode.default, before: Date().addingTimeInterval(1.0))
             }
             else {
                 if let last = lastCompleted {
@@ -107,7 +107,7 @@ class AsyncTests: XCTestCase
                     startingGun.lock()
                     while !startAsyncWork {
                         if !startingGun.wait(until: Date().addingTimeInterval(1.0)) {
-                            RunLoop.current.run(mode: .defaultRunLoopMode, before: Date().addingTimeInterval(1.0))
+                            RunLoop.current.run(mode: RunLoop.Mode.default, before: Date().addingTimeInterval(1.0))
                         }
                     }
                     startingGun.unlock()
@@ -169,7 +169,7 @@ class AsyncTests: XCTestCase
             startingGun.unlock()
             while completed < waitingFor {
                 if !semaphore.wait(until: Date().addingTimeInterval(1.0)) {
-                    RunLoop.current.run(mode: .defaultRunLoopMode, before: Date().addingTimeInterval(1.0))
+                    RunLoop.current.run(mode: RunLoop.Mode.default, before: Date().addingTimeInterval(1.0))
                 }
                 completed = preBarrierStageCompleted + inBarrierStageCompleted + postBarrierStageCompleted
             }
